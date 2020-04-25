@@ -4,16 +4,18 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') },
-      { path: '/checks', component: () => import('pages/Checks.vue') },
-      { path: '/check', component: () => import('pages/Check.vue') },
-      { path: '/check-add', component: () => import('pages/Create-Check.vue') },
-      { path: '/user', component: () => import('pages/User.vue') },
-      { path: '/user', component: () => import('pages/User.vue') },
+      { path: '', name: 'home', meta: { requiresAuth: true }, component: () => import('pages/Index.vue') },
+      { path: '/checks', meta: { requiresAuth: true }, component: () => import('pages/Checks.vue') },
+      { path: '/check', meta: { requiresAuth: true }, component: () => import('pages/Check.vue') },
+      { path: '/check-add', meta: { requiresAuth: true }, component: () => import('pages/Create-Check.vue') },
+      { path: '/user', meta: { requiresAuth: true }, component: () => import('pages/User.vue') },
+      { path: '/user', meta: { requiresAuth: true }, component: () => import('pages/User.vue') },
     ]
   },
   {
     path: '/login',
+    name: 'login',
+    meta: { requiresAuth: false },
     component: () => import('layouts/Login.vue')
   }
 ]

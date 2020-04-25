@@ -41,6 +41,7 @@
               icon="input"
               color="red"
               flat
+              @click="logout"
             />
           </div>
         </q-btn-dropdown>
@@ -55,6 +56,7 @@
 
 <script>
 import EssentialLink from 'components/EssentialLink'
+import authService from '../service/auth-service'
 
 export default {
   name: 'MainLayout',
@@ -68,8 +70,8 @@ export default {
     }
   },
   methods: {
-    ver () {
-      console.log(this.$route)
+    logout () {
+      authService.logout()
     }
   }
 }

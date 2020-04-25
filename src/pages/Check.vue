@@ -29,7 +29,7 @@
     </q-dialog>
 
     <q-list bordered separator>
-      <q-item v-for="(item, index) of itemsCheck" clickable v-ripple>
+      <q-item v-for="(item, index) of itemsCheck" :key="index" clickable v-ripple>
         <q-item-section>
           <q-item-label>{{ item.name }}</q-item-label>
           <q-item-label caption>{{ item.quantity }}</q-item-label>

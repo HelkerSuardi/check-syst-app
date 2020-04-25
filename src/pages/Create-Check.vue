@@ -38,7 +38,7 @@
     </div>
     <div class="row">
         <q-list bordered separator class="col">
-          <q-item v-for="(item, index) of itemsCheck" v-ripple>
+          <q-item v-for="(item, index) of itemsCheck" :key="index" v-ripple>
             <q-item-section>
               <q-item-label>{{ item.name }}</q-item-label>
               <q-item-label caption>{{ 'Quantidade: ' + item.quantity }}</q-item-label>

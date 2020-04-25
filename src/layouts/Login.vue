@@ -21,6 +21,7 @@
     <div class="row q-pa-md q-mt-xl">
       <q-input
         class="col"
+        v-model="email"
         label="E-mail"
         type="email"
         color="white"
@@ -42,22 +43,50 @@
         color="primary"
         class="full-width"
         label="Entrar"
+        @click="login"
       />
     </div>
   </div>
 </template>
 <script>
+import authService from '../service/auth-service'
+
 export default {
   data() {
     return {
-      password: '',
+      email: 'admin@admin.com',
+      password: '123',
       showPassword: true
+    }
+  },
+
+  methods: {
+    login () {
+      this.$axios.post('/auth/authenticate', { email: this.email, password: this.password }).then(response => {
+        const { token, data } = response.data
+        authService.login({
+          token,
+          name: data.name,
+          id: data._id,
+          role: data.role
+        })
+        this.$router.push({
+          name: 'home'
+        })
+        this.$q.notify({
+          message: 'Login efetuado com sucesso!',
+          position: 'top',
+          color: 'green-13'
+        })
+      }).catch(({ response }) => {
+        const { message } = response.data
+        this.$q.notify({
+          message,
+          position: 'top',
+          color: 'negative'
+        })
+      })
     }
   }
 }
 </script>
-<style lang="stylus" scoped>
-  .fullBody {
-
-  }
-</style>
