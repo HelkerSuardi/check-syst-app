@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-list bordered separator>
-      <q-item v-for="check of checks" clickable v-ripple @click="doCheck">
+      <q-item v-for="(check, index) of checks" :key="index" clickable v-ripple @click="doCheck">
         <q-item-section>{{ check.date }}</q-item-section>
         <q-item-section side>
           <q-btn-group push>

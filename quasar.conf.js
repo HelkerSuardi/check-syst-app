@@ -121,6 +121,10 @@ module.exports = function (/* ctx */) {
       // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
       extendWebpack (cfg) {
       },
+      env: {
+        API_URL: JSON.stringify('http://localhost:3002'),
+        JWT_TOKEN_SECRET: JSON.stringify('779e4bba41f7b60aa382ac81842d36ed'),
+      },
     },
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
