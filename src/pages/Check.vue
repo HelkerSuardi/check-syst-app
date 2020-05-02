@@ -11,34 +11,34 @@
             label="Motivos"
             map-options
             :options="justifyOptions"
-            v-model="preJustify"
+            v-model="check.itemsEquips[indexOfItemToJustify].motive"
           />
           <q-input
             type="textarea"
-            v-model="preNote"
+            v-model="check.itemsEquips[indexOfItemToJustify].justify"
             class="q-mt-lg"
             label="Justificativa"
           />
         </q-card-section>
 
         <q-card-actions align="right" class="text-primary">
-          <q-btn flat label="Cancel" v-close-popup />
+          <q-btn flat label="Cancel" v-close-popup @click="cancelNoOkJustifying" />
           <q-btn flat label="Salvar" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
 
     <q-list bordered separator>
-      <q-item v-for="(item, index) of itemsCheck" :key="index" clickable v-ripple>
+      <q-item v-for="(item, index) of check.itemsEquips" :key="index" clickable v-ripple>
         <q-item-section>
-          <q-item-label>{{ item.name }}</q-item-label>
+          <q-item-label>{{ item.item.name }}</q-item-label>
           <q-item-label caption>{{ item.quantity }}</q-item-label>
         </q-item-section>
         <q-checkbox
           left-label
           label="N/Ok"
           color="red"
-          :value="item.ok"
+          :value="item.status"
           :true-value="false"
           :false-value="true"
           @input="setNotOk(index)"
@@ -48,8 +48,8 @@
           color="green"
           left-label
           label="Ok"
-          :value="item.ok"
-          @input="item.ok = true"
+          :value="item.status"
+          @input="item.status = true"
         />
       </q-item>
     </q-list>
@@ -66,175 +66,57 @@
   </div>
 </template>
 <script>
+import { createNamespacedHelpers } from 'vuex'
+const { mapActions, mapGetters } = createNamespacedHelpers('check')
+
 export default {
   data () {
     return {
       notOkDialog: false,
       preJustify: '',
       preNote: '',
+      indexOfItemToJustify: 0,
       fabPos: [ 18, 18 ],
       draggingFab: false,
-      itemsCheck: [
-        {
-          name: 'Lanterna',
-          quantity: 2,
-          justify: '',
-          note: '',
-          ok: null
-        },
-        {
-          name: 'Combustiveeeeeeeeeeeeeeeeeeeeeeeel',
-          quantity: 12000,
-          justify: '',
-          note: '',
-          ok: null
-        },
-        {
-          name: 'Combustivel',
-          quantity: 12000,
-          justify: '',
-          note: '',
-          ok: null
-        },
-        {
-          name: 'Combustivel',
-          quantity: 12000,
-          justify: '',
-          note: '',
-          ok: null
-        },
-        {
-          name: 'Combustivel',
-          quantity: 12000,
-          justify: '',
-          note: '',
-          ok: null
-        },
-        {
-          name: 'Combustivel',
-          quantity: 12000,
-          justify: '',
-          note: '',
-          ok: null
-        },
-        {
-          name: 'Combustivel',
-          quantity: 12000,
-          justify: '',
-          note: '',
-          ok: null
-        },
-        {
-          name: 'Combustivel',
-          quantity: 12000,
-          justify: '',
-          note: '',
-          ok: null
-        },
-        {
-          name: 'Combustivel',
-          quantity: 12000,
-          justify: '',
-          note: '',
-          ok: null
-        },
-        {
-          name: 'Combustivel',
-          quantity: 12000,
-          justify: '',
-          note: '',
-          ok: null
-        },
-        {
-          name: 'Combustivel',
-          quantity: 12000,
-          justify: '',
-          note: '',
-          ok: null
-        },
-        {
-          name: 'Combustivel',
-          quantity: 12000,
-          justify: '',
-          note: '',
-          ok: null
-        },
-        {
-          name: 'Combustivel',
-          quantity: 12000,
-          justify: '',
-          note: '',
-          ok: null
-        },
-        {
-          name: 'Combustivel',
-          quantity: 12000,
-          justify: '',
-          note: '',
-          ok: null
-        },
-        {
-          name: 'Combustivel',
-          quantity: 12000,
-          justify: '',
-          note: '',
-          ok: null
-        },
-        {
-          name: 'Combustivel',
-          quantity: 12000,
-          justify: '',
-          note: '',
-          ok: null
-        },
-        {
-          name: 'Combustivel',
-          quantity: 12000,
-          justify: '',
-          note: '',
-          ok: null
-        },
-        {
-          name: 'Combustivel',
-          quantity: 12000,
-          justify: '',
-          note: '',
-          ok: null
-        },
-        {
-          name: 'Pneu',
-          quantity: 4,
-          justify: '',
-          note: '',
-          ok: null
-        }
-      ],
-      justifyOptions: [
-        {
-          label: 'Quebrado',
-          value: 'broked'
-        },
-        {
-          label: 'Não encontrado',
-          value: 'not_found'
-        }
-      ]
+      justifyOptions: ['Quebrado', 'Não encontrado', 'Outro...']
     }
   },
 
+  async created() {
+    await this.loadCheck(this.$route.params.id)
+  },
+
   methods: {
+    ...mapActions(['loadCheck']),
+
     setNotOk(itemIndex) {
-      this.itemsCheck[itemIndex].ok = false
+      this.indexOfItemToJustify = itemIndex
+      this.check.itemsEquips[itemIndex].status = false
       this.notOkDialog = true
     },
 
-    saveCheck() {
-      this.$router.push('/checks')
-      this.$q.notify({
-        message: 'Salvo com sucesso!',
-        color: 'green',
-        position: 'top'
+    cancelNoOkJustifying () {
+      this.check.itemsEquips[this.indexOfItemToJustify].motive = ''
+      this.check.itemsEquips[this.indexOfItemToJustify].justify = ''
+      this.check.itemsEquips[this.indexOfItemToJustify].status = null
+    },
+
+    async saveCheck() {
+      await this.$axios.put(`/checks/${this.check.id}`, this.check).then(() => {
+        this.$q.notify({
+          message: 'Salvo com sucesso!',
+          color: 'green',
+          position: 'top'
+        })
+        this.$router.push('/checks')
+      }).catch(e => {
+        this.$q.notify({
+          message: 'Houve uma falha ao tentar salvar esta checagem!',
+          color: 'red',
+          position: 'top'
+        })
       })
+
     },
 
     moveFab (ev) {
@@ -245,6 +127,10 @@ export default {
         this.fabPos[1] - ev.delta.y
       ]
     }
+  },
+
+  computed: {
+    ...mapGetters(['check'])
   }
 }
 </script>

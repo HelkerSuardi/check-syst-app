@@ -4,6 +4,7 @@
       <q-input
         class="col"
         label="Nome"
+        v-model="user.name"
       />
     </div>
     <div class="row q-pa-md">
@@ -11,6 +12,7 @@
         class="col"
         label="E-mail"
         type="email"
+        v-model="user.email"
       />
     </div>
     <div class="row q-pa-md">
@@ -40,12 +42,23 @@
         class="col"
         label="Salvar alterações"
         color="primary"
+        @click="save"
       />
     </div>
   </div>
 </template>
 <script>
+import authService from '../service/auth-service'
+import { createNamespacedHelpers } from 'vuex'
+const { mapActions, mapGetters } = createNamespacedHelpers('user')
+
 export default {
+  async created() {
+    const userId = authService.getId()
+
+    await this.getUser(userId)
+  },
+
   data() {
     return {
       password: '',
@@ -53,6 +66,43 @@ export default {
       showPassword: true,
       showRepeatPassword: true
     }
+  },
+
+  methods: {
+    ...mapActions(['getUser', 'editUser']),
+
+    async save () {
+      if (this.password !== '') {
+        if (this.password === this.repeatPassword) {
+          this.user.password = this.password
+        } else {
+          this.$q.notify({
+            message: 'As senhas precisam ser iguais!',
+            color: 'red',
+            position: 'top'
+          })
+          return
+        }
+      }
+
+      await this.editUser().then(() => {
+        this.$q.notify({
+          message: 'Perfil editado com sucesso!',
+          color: 'green',
+          position: 'top'
+        })
+
+        this.$router.push({ name: 'home' })
+
+        if (this.password === '') {
+          this.repeatPassword = ''
+        }
+      })
+    }
+  },
+
+  computed: {
+    ...mapGetters(['user'])
   }
 }
 </script>
