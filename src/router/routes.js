@@ -6,7 +6,7 @@ const routes = [
     children: [
       { path: '', name: 'home', meta: { requiresAuth: true }, component: () => import('pages/Index.vue') },
       { path: '/checks', meta: { requiresAuth: true }, component: () => import('pages/Checks.vue') },
-      { path: '/check', meta: { requiresAuth: true }, component: () => import('pages/Check.vue') },
+      { path: '/check/:id', name: 'check', meta: { requiresAuth: true }, component: () => import('pages/Check.vue') },
       { path: '/check-add', meta: { requiresAuth: true }, component: () => import('pages/Create-Check.vue') },
       { path: '/user', meta: { requiresAuth: true }, component: () => import('pages/User.vue') },
       { path: '/user', meta: { requiresAuth: true }, component: () => import('pages/User.vue') },
