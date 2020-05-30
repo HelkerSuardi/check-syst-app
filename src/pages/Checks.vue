@@ -9,7 +9,7 @@
               push
               icon="check_circle_outline"
               text-color="green"
-              :to="{ name:'check', params: { id: check.id } }"
+              :to="{ name:'check', params: { id: check._id || check.id } }"
             />
             <q-btn
               push
@@ -36,11 +36,15 @@ export default {
   },
 
   async created () {
-    await this.loadChecks()
+    if (authService.getRole() === 'operator') {
+      await this.loadSpecificChecks(authService.getId())
+    } else {
+      await this.loadChecks()
+    }
   },
 
   methods: {
-    ...mapActions(['loadChecks']),
+    ...mapActions(['loadChecks', 'loadSpecificChecks']),
 
     deleteCheck(checkId) {
       this.$q.dialog({
