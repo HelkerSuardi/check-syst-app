@@ -16,6 +16,14 @@ const loadCheck = async ({ commit }, checkId) => {
   })
 }
 
+const loadSpecificChecks = async ({ commit }, userId) => {
+  await API.get(`/checks/specific-check/${userId}`).then(data => {
+    commit('setChecks', data)
+  }).catch(e => {
+    console.log('Houve um erro ao buscar esta checagem')
+  })
+}
+
 const loadVehicles = async ({ commit }) => {
   await API.get('/vehicles').then(({ items }) => {
     commit('setVehicles', items)
@@ -45,5 +53,6 @@ export {
   loadCheck,
   loadVehicles,
   loadFirefighters,
-  loadItemsEquips
+  loadItemsEquips,
+  loadSpecificChecks
 }

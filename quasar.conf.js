@@ -82,7 +82,8 @@ module.exports = function (/* ctx */) {
         'QBtnDropdown',
         'QImg',
         'QPopupProxy',
-        'QDate'
+        'QDate',
+        'QChip'
       ],
 
       directives: [

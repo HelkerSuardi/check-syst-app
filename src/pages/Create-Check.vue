@@ -173,6 +173,7 @@ export default {
 
     loadSavedItemsInVehicle(selectedVehicle) {
       const vehicle = this.vehicles.find(vehicle => vehicle.id.toString() === selectedVehicle.toString())
+     
       this.check.itemsEquips = vehicle.itemsEquips.map(v => {
         return {
           item: v.item,
