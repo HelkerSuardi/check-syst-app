@@ -127,7 +127,7 @@ module.exports = function (/* ctx */) {
       extendWebpack (cfg) {
       },
       env: {
-        API_URL: JSON.stringify('http://localhost:3002'),
+        API_URL: JSON.stringify('https://checksyst.herokuapp.com'),
         JWT_TOKEN_SECRET: JSON.stringify('779e4bba41f7b60aa382ac81842d36ed'),
       },
     },
