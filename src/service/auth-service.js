@@ -21,7 +21,6 @@ const logout = () => {
     localStorage.removeItem(ID_KEY);
     localStorage.removeItem('_chs_role');
     sessionStorage.clear();
-    window.location.href = '/login';
 };
 
 const getId = () => {

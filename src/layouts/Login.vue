@@ -1,8 +1,5 @@
-<template >
-  <div
-    class="fullBody"
-    style="background-image: url('statics/img/bgorange.jpg'); width: 100%; height: 100vh; background-position: center;background-repeat: no-repeat;background-size: cover;"
-  >
+<template>
+  <q-layout view="lHh Lpr lFf" class="img-background" >
     <div class="row justify-center q-mb-xl">
       <h4 class="column items-center">CheckSyst</h4>
     </div>
@@ -57,7 +54,7 @@
         Esqueceu a senha ? Clique aqui!
       </q-chip>
     </div>
-  </div>
+  </q-layout>
 </template>
 <script>
 import authService from '../service/auth-service'
@@ -129,3 +126,12 @@ export default {
   }
 }
 </script>
+<style>
+  .img-background {
+    background: url(../statics/img/bgorange.jpg);
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+</style>
