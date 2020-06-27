@@ -41,6 +41,8 @@
         class="full-width"
         label="Entrar"
         @click="login"
+        :loading="loading"
+        :disable="loading"
       />
     </div>
     <div class="column items-center q-mt-lg">
@@ -64,12 +66,14 @@ export default {
     return {
       email: 'admin@admin.com',
       password: '123',
-      showPassword: true
+      showPassword: true,
+      loading: false
     }
   },
 
   methods: {
     login () {
+      this.loading = true
       this.$axios.post('/auth/authenticate', { email: this.email, password: this.password }).then(response => {
         const { token, data } = response.data
         authService.login({
@@ -86,7 +90,9 @@ export default {
           position: 'top',
           color: 'green-13'
         })
+        this.loading = false
       }).catch(({ response }) => {
+        this.loading = false
         const { message } = response.data
         this.$q.notify({
           message,
