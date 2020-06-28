@@ -63,7 +63,8 @@
     <div class="row">
         <q-list bordered separator class="col">
           <q-item class="column items-center">
-            <q-item-label header> {{ 'Checagem para o dia: ' + moment(check.date).format('DD/MM/YY') }} </q-item-label>
+            <q-item-label v-if="check.date" header> {{ 'Checagem para o dia: ' + moment(check.date).format('DD/MM/YY') }} </q-item-label>
+            <q-item-label v-else header> Nenhuma data selecionada </q-item-label>
           </q-item>
           <q-item v-for="(item, index) of check.itemsEquips" :key="index" v-ripple>
             <q-item-section>
@@ -173,7 +174,7 @@ export default {
 
     loadSavedItemsInVehicle(selectedVehicle) {
       const vehicle = this.vehicles.find(vehicle => vehicle.id.toString() === selectedVehicle.toString())
-     
+
       this.check.itemsEquips = vehicle.itemsEquips.map(v => {
         return {
           item: v.item,
